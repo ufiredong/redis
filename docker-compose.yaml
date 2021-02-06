@@ -1,0 +1,39 @@
+version: '2'
+services:
+  master:
+    image: redis
+    container_name: ufire-redis-master
+    command: redis-server --requirepass 123456 --masterauth 123456
+    ports:
+    - "6380:6379"
+    networks:
+     network:
+      ipv4_address: 172.30.0.2
+  slave1:
+    image: redis
+    container_name: ufire-redis-slave-1
+    ports:
+    - "6381:6379"
+    command: redis-server --slaveof ufire-redis-master 6379 --requirepass 123456 --masterauth 123456 
+    depends_on:
+    - master
+    networks:
+     network:
+      ipv4_address: 172.30.0.3
+  slave2:
+    image: redis
+    container_name: ufire-redis-slave-2
+    ports:
+    - "6382:6379"
+    command: redis-server --slaveof ufire-redis-master 6379 --requirepass 123456 --masterauth 123456
+    depends_on:
+    - master
+    networks:
+     network:
+      ipv4_address: 172.30.0.4
+networks:
+   network:
+     ipam:
+       config:
+         - subnet: 172.30.0.0/16
+           gateway: 172.30.0.1
