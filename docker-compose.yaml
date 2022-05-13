@@ -5,7 +5,7 @@ services:
     container_name: ufire-redis-master
     command: redis-server --requirepass 123456 --masterauth 123456
     ports:
-    - "6380:6379"
+    - "6380:6379" 1
     networks:
      network:
       ipv4_address: 172.30.0.2
